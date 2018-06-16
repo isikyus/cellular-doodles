@@ -59,12 +59,27 @@ var step = function() {
 // the returned array should be the same as for the original four values.
 var updateBlock = function(a, b, c, d) {
 
+  // Take from the higher values, give to the lower ones.
+  var values = [a, b, c, d];
+
+  for (var i = 0; i < values.length; i++) {
+
+    // Relying on loop condition to not run the loop if i+1 is out of bounds.
+    for (var j = i + 1; j < values.length; j++) {
+      if (values[i] > values[j]) { values[i]++; values[j]--; }
+      if (values[i] < values[j]) { values[i]--; values[j]++; }
+    }
+  }
+
+  return values;
+
+
   // Distribute the total mass evenly across all cells.
-  var total = a + b + c + d;
-  var average = Math.floor(total / 4);
-  var error = total - (average * 4);
-  
-  return [average + error, average, average, average];
+  //var total = a + b + c + d;
+  //var average = Math.floor(total / 4);
+  //var error = total - (average * 4);
+  //
+  //return [average + error, average, average, average];
 }
 
 var render = function(graphicsContext) {
