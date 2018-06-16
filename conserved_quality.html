@@ -92,6 +92,15 @@ initialize();
 // Add some inital water so we can see it flow.
 cells.water[50][50] = 255;
 
+// Add water on click.
+canvas.onclick = function(event) {
+  var canvasX = event.pageX - canvas.offsetLeft;
+  var canvasY = event.pageY - canvas.offsetTop;
+  var oldValue = cells.water[canvasX][canvasY];
+
+  cells.water[canvasX][canvasY] = Math.min(oldValue + 100, 255);
+};
+
 render(graphics);
 
 window.setInterval(function() {
