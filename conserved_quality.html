@@ -52,6 +52,9 @@ var step = function() {
   offset = 1 - offset;
 }
 
+// How quickly to average out the cells; higher numbers mean faster averaging.
+var FLOW_RATE = 0.5;
+
 // Updates a single block of a mass-conserving cellular automatom.
 // a, b, c, and d are four cell values in clockwise order (orientation not guaranteed);
 // the returned value should be an array with their four new values
@@ -66,8 +69,19 @@ var updateBlock = function(a, b, c, d) {
 
     // Relying on loop condition to not run the loop if i+1 is out of bounds.
     for (var j = i + 1; j < values.length; j++) {
-      if (values[i] > values[j]) { values[i]++; values[j]--; }
-      if (values[i] < values[j]) { values[i]--; values[j]++; }
+
+      // Flow at a rate proportional to the difference.
+      var difference = Math.abs(values[i] - values[j]);
+      var flow = Math.floor(difference * FLOW_RATE);
+
+      if (values[i] > values[j]) {
+        values[i] -= flow;
+        values[j] += flow;
+      }
+      if (values[i] < values[j]) {
+        values[i] += flow;
+        values[j] -= flow;
+      }
     }
   }
 
