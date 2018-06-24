@@ -3,7 +3,7 @@ var renderer = require('./renderer.js'),
     blockCellular = require('./automata/block.js');
 
 var SIZE = 100,
-    UPDATE_DELAY = 500; // milliseconds
+    UPDATE_DELAY = 100; // milliseconds
 
 var water = blockCellular.create(8, blockCellular.rules.flood(0.5));
 
