@@ -4,6 +4,7 @@ var canvas = document.getElementById('cells');
 var graphics = canvas.getContext('2d');
 
 var SIZE = 100;
+var MAX_VALUE = 8;
 
 var cells = {
   water: []
@@ -60,6 +61,10 @@ var FLOW_RATE = 0.5;
 // the returned value should be an array with their four new values
 // in the same order. To maintain conservation of mass, the sum of
 // the returned array should be the same as for the original four values.
+//
+// Invariants:
+//    * Sum of all four values is constant
+//    * All values remain between 0 and MAX_VALUE.
 var updateBlock = function(a, b, c, d) {
 
   // Take from the higher values, give to the lower ones.
@@ -96,6 +101,12 @@ var updateBlock = function(a, b, c, d) {
   //return [average + error, average, average, average];
 }
 
+// Range of each colour channgel (R, G, and B).
+var COLOUR_DEPTH = 255;
+
+// Scale factor to convert to 0, 255.
+var SCALE = COLOUR_DEPTH / MAX_VALUE;
+
 var render = function(graphicsContext) {
 
   var palette = { r: 0, g: 0, b: 1 };
@@ -105,9 +116,9 @@ var render = function(graphicsContext) {
     for(var j = 0; j < SIZE; j++) {
     
       // Need integer values for CSS "rgb()" function.
-      var rInt = Math.floor(palette.r * relevantArray[i][j]);
-      var gInt = Math.floor(palette.g * relevantArray[i][j]);
-      var bInt = Math.floor(palette.b * relevantArray[i][j]);
+      var rInt = Math.floor(palette.r * relevantArray[i][j] * SCALE);
+      var gInt = Math.floor(palette.g * relevantArray[i][j] * SCALE);
+      var bInt = Math.floor(palette.b * relevantArray[i][j] * SCALE);
       var colourString = 'rgb(' + rInt + ',' + gInt + ',' + bInt + ')';
       
       graphicsContext.fillStyle = colourString;
