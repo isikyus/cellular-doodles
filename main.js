@@ -37,9 +37,9 @@ cellValues.water[50][50] = 255;
 canvas.onclick = function(event) {
   var canvasX = event.pageX - canvas.offsetLeft;
   var canvasY = event.pageY - canvas.offsetTop;
-  var oldValue = cells.water[canvasX][canvasY];
+  var oldValue = cellValues.water[canvasX][canvasY];
 
-  cells.water[canvasX][canvasY] = Math.min(oldValue + 100, 255);
+  cellValues.water[canvasX][canvasY] = Math.min(oldValue + 100, 255);
 };
 
 renderer.render(canvas, cellValues);
