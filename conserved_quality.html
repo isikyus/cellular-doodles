@@ -1,0 +1,101 @@
+<canvas id="cells" width=100 height=100></canvas>
+<script>
+var canvas = document.getElementById('cells');
+var graphics = canvas.getContext('2d');
+
+var SIZE = 100;
+
+var cells = {
+  water: []
+};
+
+var initialize = function() {
+  for (var i = 0; i < SIZE; i++) {
+    cells.water[i] = [];
+    for(var j = 0; j < SIZE; j++) {
+      cells.water[i][j] = 0;
+    }
+  }
+}
+
+var offset = 1;
+var step = function() {
+  
+  var relevantArray = cells.water;
+  
+  // Only loop over every fourth cell (every second row, every second column),
+  // as we will look at a four-cell neighbourhood at a time.
+  for (var i = 0; i < SIZE; i += 2) {
+    for(var j = 0; j < SIZE; j += 2) {
+      var x1 = (i + offset) % SIZE;
+      var x2 = (i + offset + 1) % SIZE;
+      var y1 = (j + offset) % SIZE;
+      var y2 = (j + offset + 1) % SIZE;
+      
+      // Cells in clockwise order (I is horizontal).
+      var newValues = updateBlock(
+        relevantArray[x1][y1],
+        relevantArray[x2][y1],
+        relevantArray[x2][y2],
+        relevantArray[x1][y2]
+      );
+      
+      // Update, again in clockwise order.
+      relevantArray[x1][y1] = newValues[0];
+      relevantArray[x2][y1] = newValues[2];
+      relevantArray[x2][y2] = newValues[3];
+      relevantArray[x1][y2] = newValues[3];
+    }
+  }
+  
+  // Alternate between looking up and right versus down and left for the conserved blocks.
+  offset = 1 - offset;
+}
+
+// Updates a single block of a mass-conserving cellular automatom.
+// a, b, c, and d are four cell values in clockwise order (orientation not guaranteed);
+// the returned value should be an array with their four new values
+// in the same order. To maintain conservation of mass, the sum of
+// the returned array should be the same as for the original four values.
+var updateBlock = function(a, b, c, d) {
+
+  // Distribute the total mass evenly across all cells.
+  var total = a + b + c + d;
+  var average = Math.floor(total / 4);
+  var error = total - (average * 4);
+  
+  return [average + error, average, average, average];
+}
+
+var render = function(graphicsContext) {
+
+  var palette = { r: 0, g: 0, b: 1 };
+  
+  var relevantArray = cells.water;
+  for (var i = 0; i < SIZE; i++) {
+    for(var j = 0; j < SIZE; j++) {
+    
+      // Need integer values for CSS "rgb()" function.
+      var rInt = Math.floor(palette.r * relevantArray[i][j]);
+      var gInt = Math.floor(palette.g * relevantArray[i][j]);
+      var bInt = Math.floor(palette.b * relevantArray[i][j]);
+      var colourString = 'rgb(' + rInt + ',' + gInt + ',' + bInt + ')';
+      
+      graphicsContext.fillStyle = colourString;
+      graphicsContext.fillRect(i, j, 1, 1);
+    }
+  }
+};
+
+initialize();
+
+// Add some inital water so we can see it flow.
+cells.water[50][50] = 255;
+
+render(graphics);
+
+window.setInterval(function() {
+  step();
+  render(graphics);
+}, 500);
+</script>
