@@ -18,7 +18,7 @@ test('flood automaton -- fast', function(t) {
 });
 
 test('flood automaton -- slow', function(t) {
-  t.plan(3);
+  t.plan(4);
 
   var slowFlood = block.rules.flood(0.5),
       slowSharing = slowFlood(1, 10, 10, 100),
@@ -29,6 +29,10 @@ test('flood automaton -- slow', function(t) {
       slowMin = Math.min.apply(Math, slowSharing),
       imbalance = slowMax - slowMin;
   t.ok(imbalance < 75, 'Distributes more evenly than before when slow (got ' + slowSharing + ' -- out by ' + imbalance + ')');
+
+  var maxNotLast = slowFlood(0, 0, 191, 0),
+      maxNotLastMin = Math.min.apply(Math, maxNotLast);
+  t.ok(maxNotLastMin > 0, 'Distributes something to every low cell (got ' + maxNotLast + ')')
 
   t.deepEqual(slowFlood(0, 0, 0, 0), [0, 0, 0, 0], 'Does nothing to empty space');
 });

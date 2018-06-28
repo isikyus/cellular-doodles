@@ -45,7 +45,7 @@ var flood = function(flowRate) {
     var amountEach = Math.floor(pool / lowValues.length),
         error = pool % lowValues.length;
 
-    for (var index in lowValues) {
+    for (var index of lowValues) {
       values[index] += amountEach;
     }
 
