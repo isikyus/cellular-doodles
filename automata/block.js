@@ -10,12 +10,12 @@
 
 /**
  * "Flood" automaton: distribute values evenly among all cells.
- * 
+ *
  * @param flowRate How quickly differences in value should
  *                equalise, as a fraction of the difference.
  *                (e.g. 1 means immediately, 0.5 means half the
  *                difference resolves each step).
- * 
+ *
  * @return an update function as above.
  */
 var flood = function(flowRate) {
@@ -25,29 +25,43 @@ var flood = function(flowRate) {
     // Take from the higher values, give to the lower ones.
     var values = [a, b, c, d];
 
+    // Take from the higher values first.
+    var average = Math.floor((a + b + c + d)  / 4);
+    var lowValues = []
+    var pool = 0;
     for (var i = 0; i < values.length; i++) {
 
-      // Relying on loop condition to not run the loop if i+1 is out of bounds.
-      for (var j = i + 1; j < values.length; j++) {
-
-        // Flow at a rate proportional to the difference.
-        var difference = Math.abs(values[i] - values[j]);
-        var flow = Math.floor(difference * flowRate);
-
-        if (values[i] > values[j]) {
-          values[i] -= flow;
-          values[j] += flow;
-        }
-        if (values[i] < values[j]) {
-          values[i] += flow;
-          values[j] -= flow;
-        }
+      if (values[i] >= average) {
+        var excess = values[i] - average,
+            change = Math.floor(excess * flowRate);
+        values[i] -= change;
+        pool += change;
+      } else {
+        lowValues.push(i);
       }
+    }
+
+    // Now reallocate that flow evenly.
+    var amountEach = Math.floor(pool / lowValues.length),
+        error = pool % lowValues.length;
+    console.log(amountEach, error);
+    for (var index in lowValues) {
+      values[index] += amountEach;
+    }
+
+    // Randomly distribute any leftover amount, to avoid systemic bias.
+    // TODO: probably more efficient to do this with a static noise layer instead (i.e. based on coordinates).
+    while (error > 0) {
+      error--;
+      var index = Math.floor(Math.random() * 4);
+      values[index]++;
     }
 
     return values;
   };
 };
+
+
 /**
  * Create a new block cellular automaton with the given rule
  * and maximum value.
@@ -57,7 +71,7 @@ var flood = function(flowRate) {
  *             four cells values to four new values).
  */
 var create = function(maxValue, updateRule) {
-  
+
   /**
    * Build an update function for this particular rule.
    * @param time Whether we're in an odd or an even step;
