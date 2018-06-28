@@ -13,6 +13,7 @@ module.exports = function(layerColours) {
   var cellPixel = function(graphicsContext, palette, cell) {
 
     // Need integer values for CSS "rgb()" function.
+    // TODO: don't have enough scaling info here if we want to use the raw colour.
     var rInt = Math.floor(palette.r * cell);
     var gInt = Math.floor(palette.g * cell);
     var bInt = Math.floor(palette.b * cell);
@@ -62,5 +63,51 @@ module.exports = function(layerColours) {
     };
   };
 
-  return { render : render };
+  var renderGrid = function(context, scale, width, height) {
+    context.strokeStyle = 'white';
+    for (var i = 0; i < width; i++) {
+      context.resetTransform();
+      context.strokeRect(i * scale, 0, 1, height * scale);
+    }
+    for (var j = 0; j < height; j++) {
+      context.resetTransform();
+      context.strokeRect(0, j * scale, width * scale, 1);
+    }
+  };
+
+  var cellNumber = function(context, palette, cell) {
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, 1, 1);
+
+    context.fillStyle = 'white';
+    context.textBaseline = 'top';
+    context.textAlign = 'center';
+    context.font = '1px monospaced';
+    context.fillText(cell, 0.5, 0, 1);
+  };
+
+  /**
+   * Render a single layer in "debug" mode, showing cell values as
+   * numbers.
+   *
+   * @param layer The name of the layer to debug;
+   * @param scale The size in pixels of each cell.
+   */
+  var debugRender = function(canvas, cellValues, layer, scale) {
+    var context = canvas.getContext('2d');
+
+    renderLayer(context, scale,
+                layerColours[layer],
+                cellValues[layer],
+                cellNumber);
+
+    renderGrid(context, scale,
+               cellValues[layer].length,
+               cellValues[layer][0].length);
+  };
+
+  return {
+    render : render,
+    debug : debugRender
+  };
 };
