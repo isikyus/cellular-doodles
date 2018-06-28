@@ -44,7 +44,7 @@ var flood = function(flowRate) {
     // Now reallocate that flow evenly.
     var amountEach = Math.floor(pool / lowValues.length),
         error = pool % lowValues.length;
-    console.log(amountEach, error);
+
     for (var index in lowValues) {
       values[index] += amountEach;
     }
@@ -118,9 +118,9 @@ var create = function(maxValue, updateRule) {
 
         // Update, again in clockwise order.
         newCells[x1][y1] = newValues[0];
-        newCells[x2][y1] = newValues[2];
-        newCells[x2][y2] = newValues[3];
-        newCells[x1][y2] = newValues[4];
+        newCells[x2][y1] = newValues[1];
+        newCells[x2][y2] = newValues[2];
+        newCells[x1][y2] = newValues[3];
       }
     }
 
