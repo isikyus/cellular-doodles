@@ -20,13 +20,15 @@ var renderer = renderer({
   water: {r: 0, g: 0, b: COLOUR_DEPTH / water.maxValue }
 });
 
-var canvas = document.getElementById('cells');
+var canvas = document.getElementById('cells'),
+    debugView = document.getElementById('debug');
 
 var time = 0;
 window.setInterval(function() {
   time++;
   cellValues = rules.update(time, cellValues);
   renderer.render(canvas, cellValues);
+  renderer.debug(debugView, cellValues, 'water', 10);
 }, UPDATE_DELAY);
 
 
