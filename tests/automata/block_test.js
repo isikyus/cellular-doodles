@@ -18,7 +18,7 @@ test('flood automaton -- fast', function(t) {
 });
 
 test('flood automaton -- slow', function(t) {
-  t.plan(4);
+  t.plan(3);
 
   var slowFlood = block.rules.flood(0.5),
       slowSharing = slowFlood(1, 10, 10, 100),
