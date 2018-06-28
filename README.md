@@ -5,6 +5,7 @@ Requires https://github.com/browserify/browserify
 
 Build with:
 
-    browserify main.js -o built.js
+    npm install
+    make
 
 Then open `conserved_quantity.html` in a browser.
