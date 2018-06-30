@@ -1,3 +1,43 @@
-<canvas id="cells" width=100 height=100></canvas>
-<canvas id="debug" width=100 height=100></canvas>
+<html>
+<head><title>Cellular Doodles</title></head>
+<body>
+<h1>Cellular Doodles</h1>
+<p>
+  A short list of block cellular automata demonstrations.
+  <!-- TODO: link -->
+</p>
+<p>
+  Unlike conventional cellular automata (e.g. Conway's Game of Life TODO link), which base a cell's state on every neighbouring cell,
+  block automata only look at some of the neighbours in each step.
+  These block automata divide the grid into 2&times;2 blocks, and
+  calculate the new state of a block at a time.
+  Cells in a block can depend on other cells in that block, but not on any cells outside the block.
+</p>
+<p>
+  By using different blocks in alternating steps, effects can still
+  spread across the whole field.
+</p>
+<p>
+  Block cellular automata like this are good at modelling conserved
+  properties, like mass. If the update rule doesn't change the total
+  mass of a block, then the total mass in the whole world must
+  remain the same.
+</p>
+
+<section id="flood">
+  <h2>"Flood" Automaton</h2>
+  <canvas id="cells" width=100 height=100
+          data-rule='{"water": ["flood", 1]}'
+          data-palette='{"r":0, "g":0, "b":1}'>
+  </canvas>
+  <p>
+    This automaton shows something like water or gas flooding
+    through a space.
+    Cells take values from 0 to 8, and the update rule sets all
+    cells in a block to the average value of the block;
+    so the total mass in the system tries to spread out evenly.
+  </p>
+</section>
+
 <script src="built.js"></script>
+</body>
