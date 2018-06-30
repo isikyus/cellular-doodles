@@ -31,7 +31,7 @@ var flood = function(flowRate) {
     var pool = 0;
     for (var i = 0; i < values.length; i++) {
 
-      if (values[i] >= average) {
+      if (values[i] > average) {
         var excess = values[i] - average,
             change = Math.floor(excess * flowRate);
         values[i] -= change;
