@@ -1,4 +1,4 @@
-var renderer = require('./renderer.js'),
+var buildRenderer = require('./renderer.js'),
     automata = require('./automata.js'),
     ruleTypes = {
       block: require('./automata/block.js')
@@ -61,7 +61,7 @@ document.querySelectorAll('canvas').forEach(function(canvas) {
   var automata = buildAutomata(JSON.parse(data.rules)),
       cellValues = automata.initialModel(size);
       palette = scalePalette(JSON.parse(data.palette), automata),
-      renderer = renderer(palette);
+      renderer = buildRenderer(palette);
 
   // Time step of simulation -- used for certain rules.
   var time = 0;
