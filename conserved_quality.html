@@ -27,8 +27,9 @@
 <section id="flood">
   <h2>"Flood" Automaton</h2>
   <canvas id="cells" width=100 height=100
-          data-rule='{"water": ["flood", 1]}'
-          data-palette='{"r":0, "g":0, "b":1}'>
+          data-rules='{"water": {"type": "block", "rule": "flood", "parameters": [1], "maximum": 8}}'
+          data-palette='{"water": {"r":0, "g":0, "b":1}}',
+          data-click='{"action":"add", "params":[1000]}'>
   </canvas>
   <p>
     This automaton shows something like water or gas flooding

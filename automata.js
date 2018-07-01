@@ -48,8 +48,15 @@ module.exports = function(layers) {
     return newModel;
   };
   
+  var ruleInfo = function(layerName) {
+    return {
+      maxValue: layers[layerName].maxValue
+    };
+  };
+
   return {
     initialModel: initialModel,
-    update: update
+    update: update,
+    ruleInfo: ruleInfo
   };
 };
