@@ -30,7 +30,7 @@
           data-rules='{"water": {"type": "block", "rule": "flood", "parameters": [1], "maximum": 8}}'
           data-palette='{"water": {"r":0, "g":0, "b":1}}'
           data-initial='[{"layer": "water", "action": "set", "value": 1000, "x": 50, "y": 50}]'
-          data-click='{"action":"add", "params":[1000]}'>
+          data-click='{"layer": "water", "action": "set", "value": 1000}'>
   </canvas>
   <p>
     This automaton shows something like water or gas flooding
@@ -51,7 +51,7 @@
           data-rules='{"sand": {"type": "block", "rule": "flood", "parameters": [0.9], "maximum": 8}}'
           data-palette='{"sand": {"r":1, "g":1, "b":0}}'
           data-initial='[{"layer": "sand", "action": "set", "value": 1000, "x": 50, "y": 50 }]'
-          data-click='{"action":"add", "params":[1000]}'>
+          data-click='{"layer": "sand", "action": "set", "value": 1000}'>
   </canvas>
   <p>
     This is the same rule as above, except we always leave at least 10% of

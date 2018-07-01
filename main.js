@@ -93,13 +93,16 @@ document.querySelectorAll('canvas').forEach(function(canvas) {
     applyAction(action, cellValues);
   });
 
-  // TODO: generalise these:
-  // Add water on click.
-  canvas.onclick = function(event) {
-    var canvasX = event.pageX - canvas.offsetLeft;
-    var canvasY = event.pageY - canvas.offsetTop;
-    var oldValue = cellValues.water[canvasX][canvasY];
+  // Add an on-click action if specified.
+  if (data.click) {
+    var clickAction = JSON.parse(data.click);
+    canvas.onclick = function(event) {
 
-    cellValues.water[canvasX][canvasY] = Math.min(oldValue + 100, 255);
-  };
+      // TODO: probably not ideal to be mutating the action object.
+      clickAction.x = event.pageX - canvas.offsetLeft;
+      clickAction.y = event.pageY - canvas.offsetTop;
+
+      applyAction(clickAction, cellValues);
+    };
+  }
 });;
