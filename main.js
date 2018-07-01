@@ -59,7 +59,7 @@ document.querySelectorAll('canvas').forEach(function(canvas) {
       data = canvas.dataset;
 
   var automata = buildAutomata(JSON.parse(data.rules)),
-      cellValues = automata.initialModel(size);
+      cellValues = automata.initialModel(size),
       palette = scalePalette(JSON.parse(data.palette), automata),
       renderer = buildRenderer(palette);
 
