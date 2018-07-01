@@ -38,6 +38,26 @@
     cells in a block to the average value of the block;
     so the total mass in the system tries to spread out evenly.
   </p>
+  <p>
+    If the amount in a block can't be divided evenly, this
+    automaton moves the leftovers to a random cell.
+  </p>
+</section>
+
+<section id="sandpile">
+  <h2>"Sand Pile" Automaton</h2>
+  <canvas id="cells" width=100 height=100
+          data-rules='{"water": {"type": "block", "rule": "flood", "parameters": [0.9], "maximum": 8}}'
+          data-palette='{"water": {"r":1, "g":1, "b":0}}',
+          data-click='{"action":"add", "params":[1000]}'>
+  </canvas>
+  <p>
+    This is the same rule as above, except we always leave at least 10% of
+    the extra mass behind; e.g. if the average value in a block
+    is 10, and one cell has mass 20, it will be left with 11 mass
+    rather than 10. This means cells with only slightly more mass
+    than their neighbours tend to sit stably and not spread out.
+  </p>
 </section>
 
 <script src="built.js"></script>
