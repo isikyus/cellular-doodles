@@ -50,6 +50,20 @@ var scalePalette = function(rawPalette, automata) {
   return scaledPalette;
 }
 
+// Apply a given "layer action"
+// (object with an action name and parameters) to the automaton.
+// TODO: should probably be in its own file.
+var applyAction = function(act, cellValues) {
+  switch (act.action) {
+    case "set":
+      cellValues[act.layer][act.x][act.y] = act.value;
+      break;
+
+    default:
+      throw "Unknown action: " + act.action;
+  }
+};
+
 // Set up an automaton for each configured canvas.
 document.querySelectorAll('canvas').forEach(function(canvas) {
 
@@ -73,10 +87,13 @@ document.querySelectorAll('canvas').forEach(function(canvas) {
 
   renderer.render(canvas, cellValues);
 
-  // TODO: generalise these:
   // Add some inital water so we can see it flow.
-  cellValues.water[50][50] = 100000;
+  var actions = JSON.parse(data.initial);
+  actions.forEach(function(action) {
+    applyAction(action, cellValues);
+  });
 
+  // TODO: generalise these:
   // Add water on click.
   canvas.onclick = function(event) {
     var canvasX = event.pageX - canvas.offsetLeft;
